@@ -1,0 +1,15 @@
+/* GLOBAL CSS */
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap');
+
+body {
+  background-color: #f8f9fa;
+  color: #3e444a;
+  font-family: 'Rubik', sans-serif;
+}
+
+.card {
+  -webkit-box-shadow: 0px 4px 12px -4px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0px 4px 12px -4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 12px -4px rgba(0, 0, 0, 0.1);
+  border-color: transparent;
+}
