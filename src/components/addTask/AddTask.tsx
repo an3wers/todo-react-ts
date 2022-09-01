@@ -16,23 +16,24 @@ const AddTask: FC<IAddTaskProps> = ({createTask}) => {
   }
 
   return (
-    <div className='card'>
+    <div className='card mt-5'>
       <div className='card-body'>
         <form onSubmit={onSubmit}>
-          <div className='mb-3'>
+          <div className='d-flex'>
             <input
               type='text'
               className='form-control'
-              placeholder='Type...'
+              placeholder='Add new task...'
               aria-label='add task'
               value={value}
               onChange={(e) => setValue(e.target.value)}
             />
+            <button type='submit' className='btn btn-primary ms-2'>
+              <i className="bi bi-plus"></i>
+            </button>
           </div>
         
-            <button type='submit' className='btn btn-primary'>
-              Add task
-            </button>
+            
        
         </form>
       </div>

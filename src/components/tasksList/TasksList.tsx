@@ -1,17 +1,19 @@
 import { FC } from "react";
 import { ITask } from "../../types/types";
+import TaskPreview from "../taskPreview/TaskPreview";
 
 interface ITasksListProps {
   tasks: ITask[];
+  removeTask: (id:number) => void
 }
 
-const TasksList: FC<ITasksListProps> = ({ tasks }) => {
+const TasksList: FC<ITasksListProps> = ({ tasks, removeTask }) => {
   return (
-    <div>
+    <div className="tasks-list mt-5">
       {tasks.length ? (
-        tasks.map((task) => <p key={task.id}>{task.title}</p>)
+        tasks.map((task) => <TaskPreview removeTask={removeTask} key={task.id} task={task} />)
       ) : (
-        <p>Задачи нет.</p>
+        <p className="text-center py-5">Задачь нет.</p>
       )}
     </div>
   );
