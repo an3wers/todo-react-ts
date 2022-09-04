@@ -5,3 +5,8 @@ export interface ITask {
   isDone: false;
   isEditing: false;
 }
+
+export type optionsType = {
+  value: string
+  name: string
+}

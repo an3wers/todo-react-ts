@@ -9,7 +9,7 @@ interface ITasksListProps {
 
 const TasksList: FC<ITasksListProps> = ({ tasks, removeTask }) => {
   return (
-    <div className="tasks-list mt-5">
+    <div className="tasks-list">
       {tasks.length ? (
         tasks.map((task) => <TaskPreview removeTask={removeTask} key={task.id} task={task} />)
       ) : (

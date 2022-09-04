@@ -1,0 +1,20 @@
+import { FC } from "react";
+
+const Pagination:FC = () => {
+  return (
+    <nav className="py-4" aria-label="Page navigation example">
+      <ul className="pagination justify-content-center">
+        <li className="page-item disabled">
+          <a className="page-link">Previous</a>
+        </li>
+        <li className="page-item">
+          <a className="page-link" href="#">
+            Next
+          </a>
+        </li>
+      </ul>
+    </nav>
+  );
+};
+
+export default Pagination;
