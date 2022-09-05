@@ -20,8 +20,8 @@ const Home: FC = () => {
   ];
 
   const [page, setPage] = useState<number>(1);
-  
-  const MAX_LIMIT = 3;
+
+  const MAX_LIMIT_ON_PAGE = 3;
 
   function createTaskHandler(val: string) {
     const current: ITask = {
@@ -55,7 +55,6 @@ const Home: FC = () => {
   }
 
   const sortedTask = useMemo(() => {
-
     // TODO sort by date
     if (selectedSort) {
       switch (selectedSort) {
@@ -84,6 +83,18 @@ const Home: FC = () => {
     );
   }, [searchValue, sortedTask]);
 
+  // const currentTasks = sortedAndSearchedTasks.slice(firstTaskIndex, lastTaskIndex)
+
+  const sortedSearchedAndPageSlicedTasks = useMemo(() => {
+    const lastTaskIndex = page * MAX_LIMIT_ON_PAGE; // 3 // 6
+    const firstTaskIndex = lastTaskIndex - MAX_LIMIT_ON_PAGE; // 0 // 3
+    return sortedAndSearchedTasks.slice(firstTaskIndex, lastTaskIndex);
+  }, [page, sortedAndSearchedTasks]);
+
+  const totalPage = useMemo(() => {
+    return Math.ceil(tasks.length / MAX_LIMIT_ON_PAGE);
+  }, [tasks]);
+
   function sortHandler(value: string) {
     setSelectedSort(value);
 
@@ -103,20 +114,27 @@ const Home: FC = () => {
     setSearchValue(value);
   }
 
+  function prevPage() {
+    setPage((prev) => prev - 1);
+  }
+  function nextPage() {
+    setPage((prev) => prev + 1);
+  }
+
   // удаление, редактирование, изменение
 
   return (
-    <div className="py-5">
-      <div className="row justify-content-center">
-        <div className="col-12 col-xxl-6 col-xl-6 col-lg-8 col-md-10">
-          <div className="d-flex justify-content-between align-items-start">
-            <h1 className="lh-1">
+    <div className='py-5'>
+      <div className='row justify-content-center'>
+        <div className='col-12 col-xxl-6 col-xl-6 col-lg-8 col-md-10'>
+          <div className='d-flex justify-content-between align-items-start'>
+            <h1 className='lh-1'>
               Welcom, <br />
-              <span className="fs-5 fw-normal">an3wers@gmail.com</span>
+              <span className='fs-5 fw-normal'>an3wers@gmail.com</span>
             </h1>
-            <button className="btn btn-outline-primary">
+            <button className='btn btn-outline-primary'>
               <i
-                className="bi bi-box-arrow-left"
+                className='bi bi-box-arrow-left'
                 style={{ fontSize: "1rem" }}
               ></i>
             </button>
@@ -130,8 +148,18 @@ const Home: FC = () => {
             onSort={sortHandler}
             onSearch={searchHandler}
           />
-          <TasksList removeTask={removeTask} tasks={sortedAndSearchedTasks} />
-          {tasks.length > MAX_LIMIT && <Pagination />}
+          <TasksList
+            removeTask={removeTask}
+            tasks={sortedSearchedAndPageSlicedTasks}
+          />
+          {sortedAndSearchedTasks.length > MAX_LIMIT_ON_PAGE && (
+            <Pagination
+              currentPage={page}
+              prevPage={prevPage}
+              nextPage={nextPage}
+              totalPage={totalPage}
+            />
+          )}
         </div>
       </div>
     </div>
