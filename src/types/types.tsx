@@ -2,11 +2,12 @@ export interface ITask {
   id: number;
   title: string;
   date: string;
-  isDone: false;
-  isEditing: false;
+  isDone: boolean;
+  isEditing: boolean;
 }
 
 export type optionsType = {
   value: string
   name: string
 }
+

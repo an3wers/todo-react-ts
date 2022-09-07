@@ -47,11 +47,38 @@ const Home: FC = () => {
     }
   }, []);
 
+
   function removeTask(id: number) {
     // console.log(id)
     const filtered = tasks.filter((el) => el.id !== id);
     localStorage.setItem("tasks", JSON.stringify(filtered));
     setTasks(filtered);
+  }
+
+  function editTaskHandler(id:number) {
+    console.log(id)
+    const current = tasks.find(el => el.id === id)
+    tasks.forEach(el => el.isEditing = false)
+    if(current) {
+      current.isEditing = true
+    }
+    setTasks([...tasks])
+  }
+
+  function saveTaskHandler(id: number, value: string) {
+    // console.log("Задача отредактирована: ", id, value)
+
+    // tasks + таски в LS
+
+    const current = tasks.find(el => el.id === id)
+    if(current) {
+      current.title = value
+      current.isEditing = false
+      setTasks([...tasks])
+      localStorage.setItem("tasks", JSON.stringify(tasks))
+    }
+    // console.log(current)
+
   }
 
   const sortedTask = useMemo(() => {
@@ -150,6 +177,8 @@ const Home: FC = () => {
           />
           <TasksList
             removeTask={removeTask}
+            editTask={editTaskHandler}
+            saveTask={saveTaskHandler}
             tasks={sortedSearchedAndPageSlicedTasks}
           />
           {sortedAndSearchedTasks.length > MAX_LIMIT_ON_PAGE && (
