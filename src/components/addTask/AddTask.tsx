@@ -28,7 +28,7 @@ const AddTask: FC<IAddTaskProps> = ({createTask}) => {
               value={value}
               onChange={(e) => setValue(e.target.value)}
             />
-            <button type='submit' className='btn btn-primary ms-2'>
+            <button disabled={!value} type='submit' className='btn btn-primary ms-2'>
               <i className="bi bi-plus"></i>
             </button>
           </div>

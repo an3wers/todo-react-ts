@@ -5,7 +5,9 @@ interface ITaskPreviewProps {
   task: ITask;
   removeTask: (id: number) => void;
   editTask: (id: number) => void;
+  doneTask: (id: number) => void;
   saveTask: (id: number, value: string) => void;
+  closeTask: (id: number) => void;
 }
 
 const TaskPreview: FC<ITaskPreviewProps> = ({
@@ -13,6 +15,8 @@ const TaskPreview: FC<ITaskPreviewProps> = ({
   removeTask,
   saveTask,
   editTask,
+  doneTask,
+  closeTask,
 }) => {
   const [currentTask, setCurrentTask] = useState<string>(task.title); // ?
 
@@ -34,11 +38,21 @@ const TaskPreview: FC<ITaskPreviewProps> = ({
     editTask(id);
   };
 
+  const onDone = (id: number) => {
+    doneTask(id);
+  };
+
   return (
     <div className='card'>
       <div className='card-body'>
         {!task.isEditing ? (
-          <p className='fw-semibold'>{task.title}</p>
+          <p
+            className={
+              task.isDone ? "text-decoration-line-through" : "fw-semibold"
+            }
+          >
+            {task.title}
+          </p>
         ) : (
           <div>
             <input
@@ -54,7 +68,13 @@ const TaskPreview: FC<ITaskPreviewProps> = ({
               >
                 Save
               </button>
-              <button className='btn btn-sm btn-outline-danger ms-2'>
+              <button
+                onClick={() => {
+                  closeTask(task.id);
+                  setCurrentTask(task.title)
+                }}
+                className='btn btn-sm btn-outline-danger ms-2'
+              >
                 Cancel
               </button>
             </div>
@@ -64,16 +84,22 @@ const TaskPreview: FC<ITaskPreviewProps> = ({
         <div className='d-flex justify-content-between align-items-center'>
           <span className='text-secondary'>{task.date}</span>
           <div className='d-flex'>
-            <button className='btn btn-outline-primary btn-sm'>
+            <button
+              disabled={task.isDone}
+              onClick={() => onDone(task.id)}
+              className='btn btn-outline-primary btn-sm'
+            >
               <i className='bi bi-check2'></i>
             </button>
             <button
+              disabled={task.isDone}
               onClick={() => onEdit(task.id)}
               className='btn btn-outline-primary ms-2 btn-sm'
             >
               <i className='bi bi-pencil'></i>
             </button>
             <button
+              disabled={task.isDone}
               onClick={() => handleRemove(task.id)}
               className='btn btn-outline-danger ms-2 btn-sm'
             >

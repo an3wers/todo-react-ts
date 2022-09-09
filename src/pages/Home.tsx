@@ -8,6 +8,7 @@ import { ITask, optionsType } from "../types/types";
 const Home: FC = () => {
   // const [task, useTask] = useState<string>('')
   const [tasks, setTasks] = useState<ITask[]>([]);
+  // const [compleatedTasks, setCompliatedTasks] = useState<ITask[]>([])
 
   // 'by date', 'by name'
   const [selectedSort, setSelectedSort] = useState<string>(""); // selected sort by default
@@ -37,6 +38,7 @@ const Home: FC = () => {
       localStorage.setItem("tasks", JSON.stringify(res));
       return res;
     });
+
   }
 
   useEffect(() => {
@@ -47,7 +49,6 @@ const Home: FC = () => {
     }
   }, []);
 
-
   function removeTask(id: number) {
     // console.log(id)
     const filtered = tasks.filter((el) => el.id !== id);
@@ -55,30 +56,44 @@ const Home: FC = () => {
     setTasks(filtered);
   }
 
-  function editTaskHandler(id:number) {
-    console.log(id)
-    const current = tasks.find(el => el.id === id)
-    tasks.forEach(el => el.isEditing = false)
-    if(current) {
-      current.isEditing = true
-    }
-    setTasks([...tasks])
+  function editTaskHandler(id: number) {
+    setTasks(tasks.map(el => ({
+      ...el,
+      isEditing: el.id === id ? true : false
+    })))
+
   }
 
   function saveTaskHandler(id: number, value: string) {
-    // console.log("Задача отредактирована: ", id, value)
-
-    // tasks + таски в LS
-
-    const current = tasks.find(el => el.id === id)
-    if(current) {
-      current.title = value
-      current.isEditing = false
-      setTasks([...tasks])
-      localStorage.setItem("tasks", JSON.stringify(tasks))
+    const current = tasks.find((el) => el.id === id);
+    if (current) {
+      current.title = value;
+      current.isEditing = false;
+      setTasks([...tasks]);
+      localStorage.setItem("tasks", JSON.stringify(tasks));
     }
-    // console.log(current)
+  }
 
+  function closeTaskHandler(id:number) {
+    setTasks(tasks.map(el => {
+      if(el.id === id) {
+        el.isEditing = false
+      }
+      return el
+    }))
+  }
+
+  function doneTaskHandler(id: number) {
+    
+      setTasks(tasks.map(el => {
+        if(el.id === id) {
+          el.isDone = true
+        }
+        return el
+      }))
+    
+      localStorage.setItem("tasks", JSON.stringify(tasks.filter(el => !el.isDone)));
+  
   }
 
   const sortedTask = useMemo(() => {
@@ -89,15 +104,12 @@ const Home: FC = () => {
           return [...tasks].sort((a, b) =>
             a["title"].localeCompare(b["title"])
           );
-          break;
         case "default":
           return [...tasks].sort((a, b) => {
             return a.id - b.id;
           });
-          break;
         default:
           return tasks;
-          break;
       }
     } else {
       return tasks;
@@ -125,16 +137,6 @@ const Home: FC = () => {
   function sortHandler(value: string) {
     setSelectedSort(value);
 
-    // move to useMemo
-    // if(value === 'name') {
-
-    //   setTasks([...tasks].sort((a, b) => a['title'].localeCompare(b['title'])))
-    // }
-    // else if(value === 'default') {
-    //   setTasks([...tasks].sort((a, b) => {
-    //     return a.id - b.id
-    //   }))
-    // }
   }
 
   function searchHandler(value: string) {
@@ -180,6 +182,8 @@ const Home: FC = () => {
             editTask={editTaskHandler}
             saveTask={saveTaskHandler}
             tasks={sortedSearchedAndPageSlicedTasks}
+            doneTask={doneTaskHandler}
+            closeTask={closeTaskHandler}
           />
           {sortedAndSearchedTasks.length > MAX_LIMIT_ON_PAGE && (
             <Pagination
