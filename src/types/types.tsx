@@ -11,3 +11,8 @@ export type optionsType = {
   name: string
 }
 
+export interface ILogin {
+  email: string,
+  password: string,
+  token: string,
+}

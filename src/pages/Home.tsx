@@ -1,8 +1,9 @@
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useContext, useEffect, useMemo, useState } from "react";
 import AddTask from "../components/addTask/AddTask";
 import Filters from "../components/filters/filters";
 import Pagination from "../components/pagination/pagination";
 import TasksList from "../components/tasksList/TasksList";
+import { AuthContext } from "../context";
 import { ITask, optionsType } from "../types/types";
 
 const Home: FC = () => {
@@ -13,6 +14,8 @@ const Home: FC = () => {
   // 'by date', 'by name'
   const [selectedSort, setSelectedSort] = useState<string>(""); // selected sort by default
   const [searchValue, setSearchValue] = useState<string>("");
+
+  const { isAuth } = useContext(AuthContext)
 
   const sortOptions: optionsType[] = [
     { name: "by date", value: "date" },
@@ -74,9 +77,9 @@ const Home: FC = () => {
     }
   }
 
-  function closeTaskHandler(id:number) {
+  function closeTaskHandler(id: number) {
     setTasks(tasks.map(el => {
-      if(el.id === id) {
+      if (el.id === id) {
         el.isEditing = false
       }
       return el
@@ -84,16 +87,16 @@ const Home: FC = () => {
   }
 
   function doneTaskHandler(id: number) {
-    
-      setTasks(tasks.map(el => {
-        if(el.id === id) {
-          el.isDone = true
-        }
-        return el
-      }))
-    
-      localStorage.setItem("tasks", JSON.stringify(tasks.filter(el => !el.isDone)));
-  
+
+    setTasks(tasks.map(el => {
+      if (el.id === id) {
+        el.isDone = true
+      }
+      return el
+    }))
+
+    localStorage.setItem("tasks", JSON.stringify(tasks.filter(el => !el.isDone)));
+
   }
 
   const sortedTask = useMemo(() => {
@@ -159,7 +162,7 @@ const Home: FC = () => {
           <div className='d-flex justify-content-between align-items-start'>
             <h1 className='lh-1'>
               Welcom, <br />
-              <span className='fs-5 fw-normal'>an3wers@gmail.com</span>
+              <span className='fs-5 fw-normal'>{isAuth.login || ''}</span>
             </h1>
             <button className='btn btn-outline-primary'>
               <i

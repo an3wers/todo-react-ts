@@ -25,7 +25,7 @@ body {
   flex-direction: column;
 }
 
-.main {
+main {
   flex-grow: 1;
 }
 
@@ -36,3 +36,7 @@ body {
 .tasks-list > div:first-child {
   margin-top: 0rem;
 }
+
+.active-link {
+  opacity: .65;
+} 
