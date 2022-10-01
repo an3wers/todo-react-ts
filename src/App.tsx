@@ -7,16 +7,22 @@ import Layout from "./components/hoc/layout";
 import NotFound from "./pages/NotFound";
 import AuthPaths from "./components/hoc/authPaths";
 import { AuthContext } from "./context";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
 
-  interface authState {
-    isAuth: boolean,
-    login: string
-  }
+
   // настройка редиректа если не авторизован
-  const [isAuth, setAuth] = useState<authState>({isAuth: false, login: ''})
+  const [isAuth, setAuth] = useState<boolean>(false)
+  
+  useEffect(() => {
+    
+    if(localStorage.getItem('token')) {
+      console.log(123)
+      setAuth(true)
+    }
+
+  }, [])
 
   return (
     <div className='App'>

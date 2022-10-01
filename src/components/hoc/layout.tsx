@@ -5,21 +5,15 @@ import { AuthContext } from "../../context"
 
 const Layout = () => {
 
-    const location = useLocation()
-    
-    const { isAuth, setAuth } = useContext(AuthContext)
+    const location = useLocation()    
+    const { isAuth } = useContext(AuthContext)
 
-    // setAuth(!!localStorage.getItem('token'))
-    
-    console.log(isAuth)
-    
-
-    if (location.pathname === '/' && !isAuth.isAuth) {
+    if (location.pathname === '/' && !isAuth) {
         return <Navigate to="/auth" />
-    } else if (location.pathname === '/auth' && isAuth.isAuth) {
+    } else if (location.pathname === '/auth' && isAuth) {
         return <Navigate to="/" />
     }
-    else {
+    else {  
         return (
             <>
                 <main>

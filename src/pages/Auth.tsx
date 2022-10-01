@@ -1,5 +1,5 @@
 import { FC, useState, FormEvent, useContext } from "react";
-import { useNavigate, useLocation } from 'react-router-dom'
+// import { useNavigate, useLocation } from 'react-router-dom'
 import { ILogin } from '../types/types'
 import axios from 'axios'
 import { AuthContext } from "../context"
@@ -7,10 +7,10 @@ import { AuthContext } from "../context"
 
 const Auth: FC = () => {
 
-  const location = useLocation()
-  const navigate = useNavigate()
+  // const location = useLocation()
+  // const navigate = useNavigate()
 
-  const from = location
+  // const from = location
 
   const [loginState, setLoginState] = useState<ILogin>({
     email: "",
@@ -33,9 +33,9 @@ const Auth: FC = () => {
     try {
       const res = await axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${key}`, { email: loginState.email, password: loginState.password, returnSecureToken: true })
 
-      // localStorage.setItem('token', res.data.idToken)
-      console.log(res.data)
-      setAuth({isAuth: true, login:res.data.email})
+      localStorage.setItem('token', res.data.idToken)
+      // console.log(res.data)
+      setAuth(true)
       setLoginState((prevState) => {
 
         return { email: '', password: '', token: res.data.idToken }
@@ -98,6 +98,9 @@ const Auth: FC = () => {
               </form>
             </div>
           </div>
+          <p className="mt-3"><small>
+                For test: test@gmail.com, 12345678
+              </small></p>
         </div>
       </div>
 

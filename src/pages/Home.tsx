@@ -15,7 +15,7 @@ const Home: FC = () => {
   const [selectedSort, setSelectedSort] = useState<string>(""); // selected sort by default
   const [searchValue, setSearchValue] = useState<string>("");
 
-  const { isAuth } = useContext(AuthContext)
+  const { setAuth } = useContext(AuthContext)
 
   const sortOptions: optionsType[] = [
     { name: "by date", value: "date" },
@@ -153,6 +153,11 @@ const Home: FC = () => {
     setPage((prev) => prev + 1);
   }
 
+  function logout() {
+    localStorage.removeItem('token')
+    setAuth(false)
+  }
+
   // удаление, редактирование, изменение
 
   return (
@@ -160,11 +165,8 @@ const Home: FC = () => {
       <div className='row justify-content-center'>
         <div className='col-12 col-xxl-6 col-xl-6 col-lg-8 col-md-10'>
           <div className='d-flex justify-content-between align-items-start'>
-            <h1 className='lh-1'>
-              Welcom, <br />
-              <span className='fs-5 fw-normal'>{isAuth.login || ''}</span>
-            </h1>
-            <button className='btn btn-outline-primary'>
+            <h1 className='lh-1'>Todo app</h1>
+            <button onClick={logout} className='btn btn-outline-primary'>
               <i
                 className='bi bi-box-arrow-left'
                 style={{ fontSize: "1rem" }}
